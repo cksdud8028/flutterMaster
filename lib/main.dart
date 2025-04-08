@@ -12,39 +12,54 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<int> numbers = [];
+  bool showTitle = true;
 
-  void onClicked() {
+  void toggleTitle() {
     setState(() {
-      numbers.add(numbers.length + 1);
+      showTitle = !showTitle;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+      ),
       home: Scaffold(
         backgroundColor: const Color(0xFFF4EDDB),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Click Count',
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              for (var n in numbers) Text('$n'),
+              showTitle ? const MyLargeTitle() : const Text('없다 임마'),
               IconButton(
-                iconSize: 40,
-                onPressed: onClicked,
-                icon: const Icon(Icons.add_box_rounded),
+                onPressed: toggleTitle,
+                icon: const Icon(Icons.remove_red_eye),
               )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class MyLargeTitle extends StatelessWidget {
+  const MyLargeTitle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'My Large title',
+      style: TextStyle(
+          fontSize: 30, color: Theme.of(context).textTheme.titleLarge!.color),
     );
   }
 }
